@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Spreadsheet</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/table.png</normaloff>images/table.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">

@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     setupUi(this);
+    //setWindowIcon(QIcon(":/images/table.png"));
 }
 
 MainWindow::~MainWindow()

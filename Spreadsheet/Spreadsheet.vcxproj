@@ -102,7 +102,10 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtRcc Include="mainwindow.qrc" />
+    <QtRcc Include="mainwindow.qrc">
+      <QmlCacheGenerate Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</QmlCacheGenerate>
+      <QmlCacheGenerate Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</QmlCacheGenerate>
+    </QtRcc>
     <QtUic Include="finddialog.ui" />
     <QtUic Include="gotocelldialog.ui" />
     <QtUic Include="mainwindow.ui" />
@@ -123,6 +126,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\table.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

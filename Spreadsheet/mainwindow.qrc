@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="MainWindow">
+    <qresource prefix="/">
+        <file>images/table.png</file>
     </qresource>
 </RCC>
