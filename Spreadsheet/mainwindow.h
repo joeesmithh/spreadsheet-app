@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
+#include <vector>
 
 class MainWindow : public QMainWindow, public Ui::MainWindow
 {
@@ -12,6 +13,19 @@ public:
     ~MainWindow();
 
 private:
+    
+    /** Create the actions with which to populate the 'File' menu.
+        @returns A vector list of the menu actions. */
+    std::vector<QAction*> createFileMenuActions();
+
+    /** Create, populate, and add a menu to the main menu bar.
+        @param name The name of the menu.
+        @param actions The actions with which to populate the menu. */
+    QMenu* createMenu(const QString& name, const std::vector<QAction*>& actions);
+
+private slots:
+    void exitProgram();
+
      
 };
 
