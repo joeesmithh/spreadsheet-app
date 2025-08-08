@@ -52,37 +52,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gotocelldialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sortdialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="finddialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="gotocelldialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="sortdialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="finddialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="gotocelldialog.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="sortdialog.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="finddialog.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\table.png">

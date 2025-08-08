@@ -106,22 +106,13 @@
       <QmlCacheGenerate Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</QmlCacheGenerate>
       <QmlCacheGenerate Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</QmlCacheGenerate>
     </QtRcc>
-    <QtUic Include="finddialog.ui" />
-    <QtUic Include="gotocelldialog.ui" />
     <QtUic Include="mainwindow.ui" />
     <QtMoc Include="mainwindow.h" />
-    <ClCompile Include="finddialog.cpp" />
-    <ClCompile Include="gotocelldialog.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="Spreadsheet.ico" />
-    <QtUic Include="sortdialog.ui" />
     <ResourceCompile Include="Spreadsheet.rc" />
-    <QtMoc Include="gotocelldialog.h" />
-    <QtMoc Include="sortdialog.h" />
-    <QtMoc Include="finddialog.h" />
     <ClInclude Include="stdafx.h" />
-    <ClCompile Include="sortdialog.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">Create</PrecompiledHeader>

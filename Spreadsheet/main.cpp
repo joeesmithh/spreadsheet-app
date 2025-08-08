@@ -1,8 +1,5 @@
 #include "stdafx.h"
 #include "mainwindow.h"
-#include "sortdialog.h"
-#include "finddialog.h"
-#include "gotocelldialog.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
