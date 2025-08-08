@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
+#include "spreadsheet.h"
 #include <vector>
 
 class MainWindow : public QMainWindow, public Ui::MainWindow
@@ -14,6 +15,10 @@ public:
 
 private:
     
+    Spreadsheet* spreadsheet;
+
+    void initializeSpreadsheet(Spreadsheet* spreadsheet);
+
     /** Create the actions with which to populate the 'File' menu.
         @returns A vector list of the menu actions. */
     std::vector<QAction*> createFileMenuActions();

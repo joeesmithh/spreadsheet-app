@@ -6,11 +6,23 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
     
+    // Initialize spreadsheet
+    spreadsheet = new Spreadsheet(this);
+    initializeSpreadsheet(spreadsheet);
+    setCentralWidget(spreadsheet);
+
+    // Initialize menus
     QMenu* fileMenu = createMenu(tr("&File"), createFileMenuActions());
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::initializeSpreadsheet(Spreadsheet* spreadsheet)
+{
+    spreadsheet->setColumnCount(10);
+    spreadsheet->setRowCount(10);
 }
 
 std::vector<QAction*> MainWindow::createFileMenuActions()
