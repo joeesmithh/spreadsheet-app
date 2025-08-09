@@ -15,18 +15,19 @@ public:
 
 private:
     
+    // Actions
+    QAction* exitProgramAction;
+
+    // Menus
+    QMenu* fileMenu;
+
     Spreadsheet* spreadsheet;
 
-    void initializeSpreadsheet(Spreadsheet* spreadsheet);
+    // Initialize actions
+    void createActions();
 
-    /** Create the actions with which to populate the 'File' menu.
-        @returns A vector list of the menu actions. */
-    std::vector<QAction*> createFileMenuActions();
-
-    /** Create, populate, and add a menu to the main menu bar.
-        @param name The name of the menu.
-        @param actions The actions with which to populate the menu. */
-    QMenu* createMenu(const QString& name, const std::vector<QAction*>& actions);
+    // Initialize menus
+    void createMenus();
 
 private slots:
     void exitProgram();
