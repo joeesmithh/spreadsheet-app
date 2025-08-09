@@ -12,15 +12,23 @@ public:
 	~Spreadsheet();
 
 private:
+
+	QString currentFile;
+
 	enum
 	{
 		MinRowCount = 999, MinColumnCount = 26
 	};
 
+signals:
+	void updateStatus(const QString& file, const int& timeout);
+
 public slots:
 
 	/** Reset the spreadsheet. */
 	void reset();
+	void save();
+	void saveAs();
 
 };
 

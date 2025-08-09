@@ -17,11 +17,14 @@ private:
     
     // Actions
     QAction* exitProgramAction;
+    QAction* saveAction;
+    QAction* saveAsAction;
 
-    // Menus
-    QMenu* fileMenu;
-
+    // UI Elements
+    QMenuBar* menuBar;
+    QStatusBar* statusBar;
     Spreadsheet* spreadsheet;
+    QMenu* fileMenu;
 
     // Initialize actions
     void createActions();
@@ -29,8 +32,13 @@ private:
     // Initialize menus
     void createMenus();
 
+    Spreadsheet* getSpreadsheet();
+    QMenuBar* getMenuBar();
+    QStatusBar* getStatusBar();
+
 private slots:
     void exitProgram();
+    
 
      
 };

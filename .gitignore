@@ -5,6 +5,7 @@
 
 # Miscellaneous
 [Mm]isc/
+*.ms
 
 # C++ objects and libs
 *.slo

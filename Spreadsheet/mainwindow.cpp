@@ -10,10 +10,6 @@ MainWindow::MainWindow(QWidget *parent)
     createActions();
     createMenus();
 
-    // Spreadsheet
-    spreadsheet = new Spreadsheet(this);
-    setCentralWidget(spreadsheet);
-
 }
 
 MainWindow::~MainWindow()
@@ -22,18 +18,61 @@ MainWindow::~MainWindow()
 
 void MainWindow::createActions()
 {
-    exitProgramAction = new QAction("E&xit", this);
+    // Exit
+    exitProgramAction = new QAction(QIcon(":/images/exit.png"), "E&xit", this);
     exitProgramAction->setShortcut(tr("Ctrl+Q"));
-    exitProgramAction->setIcon(QIcon(":/images/exit.png"));
     exitProgramAction->setStatusTip(tr("Exit program"));
     exitProgramAction->setToolTip(tr("Exit program"));
     connect(exitProgramAction, &QAction::triggered, this, &MainWindow::exitProgram);
+
+    // Save
+    saveAction = new QAction("&Save", this);
+    saveAction->setShortcut(QKeySequence::Save);
+    saveAction->setStatusTip(tr("Save file"));
+    connect(saveAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::save);
+
+    // Save As
+    saveAsAction = new QAction("Sa&ve as", this);
+    saveAsAction->setShortcut(QKeySequence::SaveAs);
+    saveAsAction->setStatusTip(tr("Save file as"));
+    connect(saveAsAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::saveAs);
+    connect(getSpreadsheet(), &Spreadsheet::updateStatus, getStatusBar(), &QStatusBar::showMessage);
 }
 
 void MainWindow::createMenus()
 {
-    fileMenu = QMainWindow::menuBar()->addMenu(tr("&File"));
+    fileMenu = getMenuBar()->addMenu(tr("&File"));
     fileMenu->addAction(exitProgramAction);
+    fileMenu->addAction(saveAction);
+    fileMenu->addAction(saveAsAction);
+}
+
+Spreadsheet* MainWindow::getSpreadsheet()
+{
+    if (spreadsheet == nullptr)
+    {
+        spreadsheet = new Spreadsheet(this);
+        setCentralWidget(spreadsheet);
+    }
+
+    return spreadsheet;
+}
+
+QMenuBar* MainWindow::getMenuBar()
+{
+    if (menuBar == nullptr) {menuBar = QMainWindow::menuBar();}
+
+    return menuBar;
+}
+
+QStatusBar* MainWindow::getStatusBar()
+{
+    if (statusBar == nullptr)
+    {
+        statusBar = QMainWindow::statusBar();
+    }
+
+    return statusBar;
 }
 
 
@@ -41,5 +80,6 @@ void MainWindow::exitProgram()
 {
     close();
 }
+
 
 
