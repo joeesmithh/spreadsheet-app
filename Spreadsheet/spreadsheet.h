@@ -27,8 +27,8 @@ public slots:
 
 	/** Reset the spreadsheet. */
 	void reset();
+	void open();
 	void save();
 	void saveAs();
-
 };
 

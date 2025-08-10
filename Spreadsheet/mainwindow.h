@@ -17,6 +17,7 @@ private:
     
     // Actions
     QAction* exitProgramAction;
+    QAction* openAction;
     QAction* saveAction;
     QAction* saveAsAction;
 

@@ -25,6 +25,12 @@ void MainWindow::createActions()
     exitProgramAction->setToolTip(tr("Exit program"));
     connect(exitProgramAction, &QAction::triggered, this, &MainWindow::exitProgram);
 
+    // Open
+    openAction = new QAction(tr("&Open"), this);
+    openAction->setShortcut(QKeySequence::Open);
+    openAction->setStatusTip("Open existing file");
+    connect(openAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::open);
+
     // Save
     saveAction = new QAction("&Save", this);
     saveAction->setShortcut(QKeySequence::Save);
@@ -43,6 +49,7 @@ void MainWindow::createMenus()
 {
     fileMenu = getMenuBar()->addMenu(tr("&File"));
     fileMenu->addAction(exitProgramAction);
+    fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(saveAsAction);
 }

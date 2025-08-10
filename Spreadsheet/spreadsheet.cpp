@@ -31,6 +31,42 @@ void Spreadsheet::reset()
 	currentFile = "";
 }
 
+void Spreadsheet::open()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), tr("."), tr("Mysheet (*.ms)"));
+
+	if (fileName != nullptr)
+	{
+		clearContents();
+
+		currentFile = fileName;
+
+		QFile file(currentFile);
+
+		if (file.open(QIODevice::ReadOnly))
+		{
+			QDataStream fileStream(&file);
+
+			while (!fileStream.atEnd())
+			{
+				int row;
+				int column;
+				QString text;
+
+				fileStream >> row;
+				fileStream >> column;
+				fileStream >> text;
+
+				QTableWidgetItem* item = new QTableWidgetItem(text);
+				setItem(row, column, item);
+			}
+		}
+
+	}
+
+	emit updateStatus(fileName, 2000);
+}	
+
 void Spreadsheet::save()
 {
 	if (currentFile.isEmpty())
