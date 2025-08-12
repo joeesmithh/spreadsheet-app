@@ -29,19 +29,19 @@ void MainWindow::createActions()
     openAction = new QAction(tr("&Open"), this);
     openAction->setShortcut(QKeySequence::Open);
     openAction->setStatusTip("Open existing file");
-    connect(openAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::open);
+    connect(openAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::handleOpen);
 
     // Save
     saveAction = new QAction("&Save", this);
     saveAction->setShortcut(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save file"));
-    connect(saveAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::save);
+    connect(saveAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::handleSave);
 
     // Save As
     saveAsAction = new QAction("Sa&ve as", this);
     saveAsAction->setShortcut(QKeySequence::SaveAs);
     saveAsAction->setStatusTip(tr("Save file as"));
-    connect(saveAsAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::saveAs);
+    connect(saveAsAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::handleSaveAs);
     connect(getSpreadsheet(), &Spreadsheet::updateStatus, getStatusBar(), &QStatusBar::showMessage);
 }
 

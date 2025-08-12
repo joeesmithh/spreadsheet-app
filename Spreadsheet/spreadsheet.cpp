@@ -31,11 +31,11 @@ void Spreadsheet::reset()
 	currentFile = "";
 }
 
-void Spreadsheet::open()
+void Spreadsheet::handleOpen()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), tr("."), tr("Mysheet (*.ms)"));
 
-	if (fileName != nullptr)
+	if (!fileName.isNull())
 	{
 		clearContents();
 
@@ -61,18 +61,18 @@ void Spreadsheet::open()
 				setItem(row, column, item);
 			}
 		}
+		
+		emit updateStatus(tr("Opened %1").arg(fileName), 2000);
 
 	}
-
-	emit updateStatus(fileName, 2000);
 }	
 
-void Spreadsheet::save()
+void Spreadsheet::handleSave()
 {
 	if (currentFile.isEmpty())
 	{
 		// Select file for writing
-		saveAs();
+		handleSaveAs();
 	}
 	else
 	{
@@ -101,12 +101,12 @@ void Spreadsheet::save()
 	}
 }
 
-void Spreadsheet::saveAs()
+void Spreadsheet::handleSaveAs()
 {
 	currentFile =
 		QFileDialog::getSaveFileName(this, tr("Save File"), tr("."), tr("Mysheet (*.ms)"));
 
-	save();
+	handleSave();
 	
 }
 

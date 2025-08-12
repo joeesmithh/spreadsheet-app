@@ -20,15 +20,16 @@ private:
 		MinRowCount = 999, MinColumnCount = 26
 	};
 
+	void reset();
+
 signals:
 	void updateStatus(const QString& file, const int& timeout);
 
 public slots:
 
 	/** Reset the spreadsheet. */
-	void reset();
-	void open();
-	void save();
-	void saveAs();
+	void handleOpen();
+	void handleSave();
+	void handleSaveAs();
 };
 
