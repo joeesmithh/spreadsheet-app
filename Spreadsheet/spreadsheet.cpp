@@ -5,6 +5,9 @@ Spreadsheet::Spreadsheet(QWidget* parent)
 	: QTableWidget(parent)
 {
 	setupUi(this);
+
+	connect(this, &QTableWidget::cellChanged, this, &Spreadsheet::somethingChanged);
+
 	reset();
 }
 
@@ -71,6 +74,7 @@ void Spreadsheet::handleOpen()
 		}
 		
 		emit fileChanged(getStrippedFileName(fileName));
+		emit modified(false);
 		emit updateStatus(tr("Opened %1").arg(getStrippedFileName(fileName)), 2000);
 	}
 }	
@@ -105,6 +109,7 @@ void Spreadsheet::handleSave()
 			}
 
 			emit fileChanged(getStrippedFileName(fileName));
+			emit modified(false);
 			emit updateStatus(tr("Saved %1").arg(getStrippedFileName(fileName)), 2000);
 		}
 	}
@@ -116,6 +121,11 @@ void Spreadsheet::handleSaveAs()
 		QFileDialog::getSaveFileName(this, tr("Save File"), tr("."), tr("Mysheet (*.ms)"));
 
 	handleSave();
+}
+
+void Spreadsheet::somethingChanged()
+{
+	emit modified(true);
 }
 
 

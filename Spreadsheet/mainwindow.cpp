@@ -68,6 +68,7 @@ Spreadsheet* MainWindow::getSpreadsheet()
 
         connect(spreadsheet, &Spreadsheet::fileChanged, this, &MainWindow::handleFileChanged);
         connect(spreadsheet, &Spreadsheet::updateStatus, getStatusBar(), &QStatusBar::showMessage);
+        connect(spreadsheet, &Spreadsheet::modified, this, &QWidget::setWindowModified);
 
         setCentralWidget(spreadsheet);
     }
@@ -100,7 +101,7 @@ void MainWindow::exitProgram()
 
 void MainWindow::handleFileChanged(const QString& fileName)
 {
-    setWindowTitle(tr("%1[*] - Spreadsheet").arg(fileName));
+    setWindowTitle(tr("%1 - Spreadsheet [*]").arg(fileName));
 }
 
 

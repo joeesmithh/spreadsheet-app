@@ -27,11 +27,12 @@ public:
 signals:
 	void updateStatus(const QString& file, const int& timeout);
 	void fileChanged(const QString& fileName);
+	void modified(const bool& isChanged);
 
 public slots:
-
 	void handleOpen();
 	void handleSave();
 	void handleSaveAs();
+	void somethingChanged();
 };
 
