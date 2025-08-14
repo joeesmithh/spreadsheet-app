@@ -120,7 +120,10 @@ void Spreadsheet::handleSaveAs()
 	fileName =
 		QFileDialog::getSaveFileName(this, tr("Save File"), tr("."), tr("Mysheet (*.ms)"));
 
-	handleSave();
+	if (!fileName.isNull())
+	{
+		handleSave();
+	}
 }
 
 void Spreadsheet::somethingChanged()

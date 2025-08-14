@@ -101,7 +101,7 @@ void MainWindow::exitProgram()
 
 void MainWindow::handleFileChanged(const QString& fileName)
 {
-    setWindowTitle(tr("%1 - Spreadsheet [*]").arg(fileName));
+    setWindowTitle(tr("Spreadsheet - %1 [*]").arg(fileName));
 }
 
 
