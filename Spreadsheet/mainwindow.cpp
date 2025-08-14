@@ -6,10 +6,17 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
+    // Initialize Window Elements
+    getSpreadsheet();
+    getMenuBar();
+    getStatusBar();
+
     // Menus
     createActions();
     createMenus();
 
+    // Window
+    handleFileChanged("New File");
 }
 
 MainWindow::~MainWindow()
@@ -42,7 +49,6 @@ void MainWindow::createActions()
     saveAsAction->setShortcut(QKeySequence::SaveAs);
     saveAsAction->setStatusTip(tr("Save file as"));
     connect(saveAsAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::handleSaveAs);
-    connect(getSpreadsheet(), &Spreadsheet::updateStatus, getStatusBar(), &QStatusBar::showMessage);
 }
 
 void MainWindow::createMenus()
@@ -59,6 +65,10 @@ Spreadsheet* MainWindow::getSpreadsheet()
     if (spreadsheet == nullptr)
     {
         spreadsheet = new Spreadsheet(this);
+
+        connect(spreadsheet, &Spreadsheet::fileChanged, this, &MainWindow::handleFileChanged);
+        connect(spreadsheet, &Spreadsheet::updateStatus, getStatusBar(), &QStatusBar::showMessage);
+
         setCentralWidget(spreadsheet);
     }
 
@@ -86,6 +96,11 @@ QStatusBar* MainWindow::getStatusBar()
 void MainWindow::exitProgram()
 {
     close();
+}
+
+void MainWindow::handleFileChanged(const QString& fileName)
+{
+    setWindowTitle(tr("%1[*] - Spreadsheet").arg(fileName));
 }
 
 

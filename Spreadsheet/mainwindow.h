@@ -37,10 +37,8 @@ private:
     QMenuBar* getMenuBar();
     QStatusBar* getStatusBar();
 
-private slots:
+public slots:
     void exitProgram();
-    
-
-     
+    void handleFileChanged(const QString& fileName);
 };
 

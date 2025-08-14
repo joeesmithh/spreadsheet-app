@@ -28,7 +28,15 @@ void Spreadsheet::reset()
 		setHorizontalHeaderItem(i, header);
 	}
 
-	currentFile = "";
+	fileName = "";
+
+	emit fileChanged(getStrippedFileName(fileName));
+}
+
+QString Spreadsheet::getStrippedFileName(const QString& fileName) const
+{
+	QFileInfo fileInfo(fileName);
+	return fileInfo.baseName();
 }
 
 void Spreadsheet::handleOpen()
@@ -39,9 +47,9 @@ void Spreadsheet::handleOpen()
 	{
 		clearContents();
 
-		currentFile = fileName;
+		Spreadsheet::fileName = fileName;
 
-		QFile file(currentFile);
+		QFile file(fileName);
 
 		if (file.open(QIODevice::ReadOnly))
 		{
@@ -62,21 +70,21 @@ void Spreadsheet::handleOpen()
 			}
 		}
 		
-		emit updateStatus(tr("Opened %1").arg(fileName), 2000);
-
+		emit fileChanged(getStrippedFileName(fileName));
+		emit updateStatus(tr("Opened %1").arg(getStrippedFileName(fileName)), 2000);
 	}
 }	
 
 void Spreadsheet::handleSave()
 {
-	if (currentFile.isEmpty())
+	if (fileName.isEmpty())
 	{
 		// Select file for writing
 		handleSaveAs();
 	}
 	else
 	{
-		QFile file(currentFile);
+		QFile file(fileName);
 
 		// Open file for writing
 		if (file.open(QIODeviceBase::WriteOnly))
@@ -96,18 +104,18 @@ void Spreadsheet::handleSave()
 				}
 			}
 
-			emit updateStatus(tr("Saved %1").arg(currentFile), 2000);
+			emit fileChanged(getStrippedFileName(fileName));
+			emit updateStatus(tr("Saved %1").arg(getStrippedFileName(fileName)), 2000);
 		}
 	}
 }
 
 void Spreadsheet::handleSaveAs()
 {
-	currentFile =
+	fileName =
 		QFileDialog::getSaveFileName(this, tr("Save File"), tr("."), tr("Mysheet (*.ms)"));
 
 	handleSave();
-	
 }
 
 
