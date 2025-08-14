@@ -117,11 +117,12 @@ void Spreadsheet::handleSave()
 
 void Spreadsheet::handleSaveAs()
 {
-	fileName =
+	QString fileName =
 		QFileDialog::getSaveFileName(this, tr("Save File"), tr("."), tr("Mysheet (*.ms)"));
 
 	if (!fileName.isNull())
 	{
+		Spreadsheet::fileName = fileName;
 		handleSave();
 	}
 }
