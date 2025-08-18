@@ -31,16 +31,16 @@ private:
 		@return The base file name. */
 	QString getStrippedFileName(const QString& filePath) const;
 
-	/** Determines whether the program can continue in light of unsaved changes.
-		@return True if the program can safely continue, false otherwise. */
-	bool canContinue();
-
 public:
 	Spreadsheet(QWidget* parent = nullptr);
 	~Spreadsheet();
 
 	/** Reset the spreadsheet and all its data. */
 	void reset();
+
+	/** Determines whether the program can continue in light of unsaved changes.
+		@return True if the program can safely continue, false otherwise. */
+	bool canContinue();
 
 	/** Does the spreadsheet file have any unsaved changes?
 		@return True if there are unsaved changes, false otherwise. */

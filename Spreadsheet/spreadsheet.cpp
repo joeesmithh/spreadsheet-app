@@ -70,7 +70,7 @@ bool Spreadsheet::canContinue()
 	int result = QMessageBox::warning(this,
 									  tr("Save your work!"),
 									  tr("You have unsaved changes.\n"
-										 "Would you like to save before opening a new file?"),
+										 "Would you like to save before proceeding?"),
 									  QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
 									  QMessageBox::Save);
 
