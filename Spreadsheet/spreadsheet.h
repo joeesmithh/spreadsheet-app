@@ -42,6 +42,10 @@ public:
 	Spreadsheet(QWidget* parent = nullptr);
 	~Spreadsheet();
 
+	/** Does the spreadsheet file have any unsaved changes?
+		@return True if there are unsaved changes, false otherwise. */
+	bool getUnsavedChanges() const;
+
 signals:
 	/** Indicate something has occurred within the spreadsheet.
 		@param message Message to send. */

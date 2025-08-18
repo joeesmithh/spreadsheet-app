@@ -10,8 +10,13 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
     Q_OBJECT
 
 public:
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    /** Interrupt QWidget close requests.
+        @param The event requesting the close. */
+    void closeEvent(QCloseEvent* event);
 
 private:
     

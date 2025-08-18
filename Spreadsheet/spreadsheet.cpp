@@ -40,6 +40,11 @@ void Spreadsheet::setFile(const QString& filePath)
 	emit fileChanged(getStrippedFileName(filePath));
 }
 
+bool Spreadsheet::getUnsavedChanges() const
+{
+	return hasUnsavedChanges;
+}
+
 void Spreadsheet::setUnsavedChanges(const bool& state)
 {
 	hasUnsavedChanges = state;

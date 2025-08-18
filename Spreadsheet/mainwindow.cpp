@@ -22,6 +22,33 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow()
 {}
 
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+	// Prompt save before closing
+	if (getSpreadsheet()->getUnsavedChanges())
+	{
+		int result = QMessageBox::warning(this,
+										  tr("Before you exit!"),
+										  tr("You have unsaved changes!\n"
+											 "Would you like to save before exiting?"),
+										  QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+										  QMessageBox::Save);
+
+		switch (result)
+		{
+			case QMessageBox::Save:							// Save changes
+				if (!getSpreadsheet()->onSaveTriggered())
+					event->ignore();
+				break;
+			case QMessageBox::Cancel:						// Close dialog
+				event->ignore();
+				break;
+			case QMessageBox::Discard:						// Discard changes
+				break;
+		}
+	}
+}
+
 void MainWindow::createActions()
 {
 	// Exit
