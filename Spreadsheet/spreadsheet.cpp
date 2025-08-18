@@ -37,7 +37,7 @@ void Spreadsheet::reset()
 void Spreadsheet::setFile(const QString& filePath)
 {
 	mainFile = filePath;
-	emit fileChanged(getStrippedFileName(mainFile));
+	emit fileChanged(getStrippedFileName(filePath));
 }
 
 void Spreadsheet::setUnsavedChanges(const bool& state)
@@ -52,7 +52,34 @@ QString Spreadsheet::getStrippedFileName(const QString& fileName) const
 	return fileInfo.baseName();
 }
 
-void Spreadsheet::onOpenTriggered()
+bool Spreadsheet::canContinue()
+{
+	// Safe to continue if no unsaved changes
+	if (!hasUnsavedChanges)
+	{
+		return true;
+	}
+
+	// Message box prompt
+	int result = QMessageBox::warning(this,
+									  tr("Save your work!"),
+									  tr("You have unsaved changes.\n"
+										 "Would you like to save before opening a new file?"),
+									  QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+									  QMessageBox::Save);
+
+	switch (result)
+	{
+		case QMessageBox::Save:			// Save changes
+			return onSaveTriggered();
+		case QMessageBox::Cancel:		// Cancel dialog
+			return false;
+		case QMessageBox::Discard:		// Discard changes
+			return true;
+	}
+}
+
+bool Spreadsheet::onOpenTriggered()
 {
 	// Get file name
 	QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), tr("."), tr("Mysheet (*.ms)"));
@@ -69,36 +96,42 @@ void Spreadsheet::onOpenTriggered()
 
 			// TODO: Validate file type
 
-			clearContents();
-
-			int row;
-			int column;
-			QString text;
-
-			while (!fileStream.atEnd())
+			// Usaved changes dialog
+			if (canContinue())
 			{
-				fileStream >> row;
-				fileStream >> column;
-				fileStream >> text;
+				// Clear cell data
+				clearContents();
 
-				QTableWidgetItem* item = new QTableWidgetItem(text);
-				setItem(row, column, item);
+				// Read data from file
+				int row, column;
+				QString text;
+				while (!fileStream.atEnd())
+				{
+					fileStream >> row;
+					fileStream >> column;
+					fileStream >> text;
+
+					QTableWidgetItem* item = new QTableWidgetItem(text);
+					setItem(row, column, item);
+				}
+
+				setFile(filePath);
+				setUnsavedChanges(false);
+				emit spreadsheetMessage(tr("Opened %1").arg(getStrippedFileName(filePath)));
+				return true;
 			}
-
-			setFile(filePath);
-			setUnsavedChanges(false);
-			emit spreadsheetMessage(tr("Opened %1").arg(getStrippedFileName(filePath)));
 		}
-
 	}
+
+	return false;
 }
 
-void Spreadsheet::onSaveTriggered()
+bool Spreadsheet::onSaveTriggered()
 {
 	if (mainFile.isEmpty())
 	{
 		// Select file for writing
-		onSaveAsTriggered();
+		return onSaveAsTriggered();
 	}
 	else
 	{
@@ -107,13 +140,13 @@ void Spreadsheet::onSaveTriggered()
 		// Open file for writing
 		if (file.open(QIODeviceBase::WriteOnly))
 		{
+			// Write data
 			QDataStream fileStream(&file);
-
 			for (int row = 0; row < MinRowCount; row++)
 			{
 				for (int col = 0; col < MinColumnCount; col++)
 				{
-					// Write item
+					// Write item to file
 					QTableWidgetItem* curItem = item(row, col);
 					if (curItem != nullptr)
 					{
@@ -124,11 +157,14 @@ void Spreadsheet::onSaveTriggered()
 
 			setUnsavedChanges(false);
 			emit spreadsheetMessage(tr("Saved %1").arg(getStrippedFileName(mainFile)));
+			return true;
 		}
+
+		return false;
 	}
 }
 
-void Spreadsheet::onSaveAsTriggered()
+bool Spreadsheet::onSaveAsTriggered()
 {
 	QString filePath =
 		QFileDialog::getSaveFileName(this, tr("Save File"), tr("."), tr("Mysheet (*.ms)"));
@@ -136,8 +172,10 @@ void Spreadsheet::onSaveAsTriggered()
 	if (!filePath.isNull())
 	{
 		setFile(filePath);
-		onSaveTriggered();
+		return onSaveTriggered();
 	}
+
+	return false;
 }
 
 void Spreadsheet::onCellChanged()
