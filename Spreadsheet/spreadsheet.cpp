@@ -32,6 +32,7 @@ void Spreadsheet::reset()
 	}
 
 	setFile("");
+	setUnsavedChanges(false);
 }
 
 void Spreadsheet::setFile(const QString& filePath)
@@ -82,6 +83,17 @@ bool Spreadsheet::canContinue()
 		case QMessageBox::Discard:		// Discard changes
 			return true;
 	}
+}
+
+bool Spreadsheet::onNewFileTriggered()
+{
+	if (canContinue())
+	{
+		reset();
+		return true;
+	}
+
+	return false;
 }
 
 bool Spreadsheet::onOpenTriggered()

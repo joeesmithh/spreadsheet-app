@@ -14,9 +14,6 @@ MainWindow::MainWindow(QWidget* parent)
 	// Menus
 	createActions();
 	createMenus();
-
-	// Window
-	onFileChanged(tr("New File"));
 }
 
 MainWindow::~MainWindow()
@@ -51,12 +48,11 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::createActions()
 {
-	// Exit
-	exitAction = new QAction(QIcon(tr(":/images/exit.png")), tr("E&xit"), this);
-	exitAction->setShortcut(tr("Ctrl+Q"));
-	exitAction->setStatusTip(tr("Exit program"));
-	exitAction->setToolTip(tr("Exit program"));
-	connect(exitAction, &QAction::triggered, this, &MainWindow::onExitTriggered);
+	// New File
+	newFileAction = new QAction(QIcon(tr(":/images/new.png")), tr("&New File"), this);
+	newFileAction->setShortcut(QKeySequence::New);
+	newFileAction->setStatusTip(tr("Create a new file"));
+	connect(newFileAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::onNewFileTriggered);
 
 	// Open
 	openAction = new QAction(QIcon(tr(":/images/open.png")), tr("&Open"), this);
@@ -75,11 +71,19 @@ void MainWindow::createActions()
 	saveAsAction->setShortcut(QKeySequence::SaveAs);
 	saveAsAction->setStatusTip(tr("Save file as"));
 	connect(saveAsAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::onSaveAsTriggered);
+
+	// Exit
+	exitAction = new QAction(QIcon(tr(":/images/exit.png")), tr("E&xit"), this);
+	exitAction->setShortcut(tr("Ctrl+Q"));
+	exitAction->setStatusTip(tr("Exit program"));
+	exitAction->setToolTip(tr("Exit program"));
+	connect(exitAction, &QAction::triggered, this, &MainWindow::onExitTriggered);
 }
 
 void MainWindow::createMenus()
 {
 	fileMenu = getMenuBar()->addMenu(tr("&File"));
+	fileMenu->addAction(newFileAction);
 	fileMenu->addAction(openAction);
 	fileMenu->addAction(saveAction);
 	fileMenu->addAction(saveAsAction);
@@ -97,6 +101,8 @@ Spreadsheet* MainWindow::getSpreadsheet()
 		connect(spreadsheet, &Spreadsheet::unsavedChanges, this, &QWidget::setWindowModified);
 
 		setCentralWidget(spreadsheet);
+
+		spreadsheet->reset();
 	}
 
 	return spreadsheet;
@@ -130,7 +136,8 @@ void MainWindow::onExitTriggered()
 
 void MainWindow::onFileChanged(const QString& fileName)
 {
-	setWindowTitle(tr("Spreadsheet - %1 [*]").arg(fileName));
+	QString displayFileName = fileName.isEmpty() ? tr("New File") : fileName;
+	setWindowTitle(tr("Spreadsheet - %1 [*]").arg(displayFileName));
 }
 
 void MainWindow::onSpreadsheetMessage(const QString& thing)

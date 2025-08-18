@@ -24,6 +24,7 @@ private:
 
     // Actions
     QAction* exitAction;
+    QAction* newFileAction;
     QAction* openAction;
     QAction* saveAction;
     QAction* saveAsAction;

@@ -18,9 +18,6 @@ private:
 	bool hasUnsavedChanges;
 	QString mainFile;
 
-	/** Reset the spreadsheet and all its data. */
-	void reset();
-
 	/** Change the main spreadsheet file.
 	@param fileName Name of new file. */
 	void setFile(const QString& fileName);
@@ -42,6 +39,9 @@ public:
 	Spreadsheet(QWidget* parent = nullptr);
 	~Spreadsheet();
 
+	/** Reset the spreadsheet and all its data. */
+	void reset();
+
 	/** Does the spreadsheet file have any unsaved changes?
 		@return True if there are unsaved changes, false otherwise. */
 	bool getUnsavedChanges() const;
@@ -60,6 +60,11 @@ signals:
 	void unsavedChanges(const bool& isChanged);
 
 public slots:
+
+	/** Handle newFile action.
+		@return True if new file created successfully, false otherwise. */
+	bool onNewFileTriggered();
+
 	/** Handle Open action.
 		@return True if successfully opened, false otherwise. */
 	bool onOpenTriggered();
