@@ -59,13 +59,13 @@ void MainWindow::createActions()
 	connect(exitAction, &QAction::triggered, this, &MainWindow::onExitTriggered);
 
 	// Open
-	openAction = new QAction(tr("&Open"), this);
+	openAction = new QAction(QIcon(tr(":/images/open.png")), tr("&Open"), this);
 	openAction->setShortcut(QKeySequence::Open);
 	openAction->setStatusTip(tr("Open existing file"));
 	connect(openAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::onOpenTriggered);
 
 	// Save
-	saveAction = new QAction(tr("&Save"), this);
+	saveAction = new QAction(QIcon(tr(":/images/save.png")), tr("&Save"), this);
 	saveAction->setShortcut(QKeySequence::Save);
 	saveAction->setStatusTip(tr("Save file"));
 	connect(saveAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::onSaveTriggered);
@@ -80,10 +80,10 @@ void MainWindow::createActions()
 void MainWindow::createMenus()
 {
 	fileMenu = getMenuBar()->addMenu(tr("&File"));
-	fileMenu->addAction(exitAction);
 	fileMenu->addAction(openAction);
 	fileMenu->addAction(saveAction);
 	fileMenu->addAction(saveAsAction);
+	fileMenu->addAction(exitAction);
 }
 
 Spreadsheet* MainWindow::getSpreadsheet()
