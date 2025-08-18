@@ -1,107 +1,114 @@
 #include "stdafx.h"
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget* parent)
+	: QMainWindow(parent)
 {
-    setupUi(this);
+	setupUi(this);
 
-    // Initialize Window Elements
-    getSpreadsheet();
-    getMenuBar();
-    getStatusBar();
+	// Initialize window elements
+	getSpreadsheet();
+	getMenuBar();
+	getStatusBar();
 
-    // Menus
-    createActions();
-    createMenus();
+	// Menus
+	createActions();
+	createMenus();
 
-    // Window
-    handleFileChanged("New File");
+	// Window
+	onFileChanged(tr("New File"));
 }
 
 MainWindow::~MainWindow()
-{
-}
+{}
 
 void MainWindow::createActions()
 {
-    // Exit
-    exitProgramAction = new QAction(QIcon(":/images/exit.png"), "E&xit", this);
-    exitProgramAction->setShortcut(tr("Ctrl+Q"));
-    exitProgramAction->setStatusTip(tr("Exit program"));
-    exitProgramAction->setToolTip(tr("Exit program"));
-    connect(exitProgramAction, &QAction::triggered, this, &MainWindow::exitProgram);
+	// Exit
+	exitAction = new QAction(QIcon(tr(":/images/exit.png")), tr("E&xit"), this);
+	exitAction->setShortcut(tr("Ctrl+Q"));
+	exitAction->setStatusTip(tr("Exit program"));
+	exitAction->setToolTip(tr("Exit program"));
+	connect(exitAction, &QAction::triggered, this, &MainWindow::onExitTriggered);
 
-    // Open
-    openAction = new QAction(tr("&Open"), this);
-    openAction->setShortcut(QKeySequence::Open);
-    openAction->setStatusTip("Open existing file");
-    connect(openAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::handleOpen);
+	// Open
+	openAction = new QAction(tr("&Open"), this);
+	openAction->setShortcut(QKeySequence::Open);
+	openAction->setStatusTip(tr("Open existing file"));
+	connect(openAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::onOpenTriggered);
 
-    // Save
-    saveAction = new QAction("&Save", this);
-    saveAction->setShortcut(QKeySequence::Save);
-    saveAction->setStatusTip(tr("Save file"));
-    connect(saveAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::handleSave);
+	// Save
+	saveAction = new QAction(tr("&Save"), this);
+	saveAction->setShortcut(QKeySequence::Save);
+	saveAction->setStatusTip(tr("Save file"));
+	connect(saveAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::onSaveTriggered);
 
-    // Save As
-    saveAsAction = new QAction("Sa&ve as", this);
-    saveAsAction->setShortcut(QKeySequence::SaveAs);
-    saveAsAction->setStatusTip(tr("Save file as"));
-    connect(saveAsAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::handleSaveAs);
+	// Save As
+	saveAsAction = new QAction(tr("Sa&ve as"), this);
+	saveAsAction->setShortcut(QKeySequence::SaveAs);
+	saveAsAction->setStatusTip(tr("Save file as"));
+	connect(saveAsAction, &QAction::triggered, getSpreadsheet(), &Spreadsheet::onSaveAsTriggered);
 }
 
 void MainWindow::createMenus()
 {
-    fileMenu = getMenuBar()->addMenu(tr("&File"));
-    fileMenu->addAction(exitProgramAction);
-    fileMenu->addAction(openAction);
-    fileMenu->addAction(saveAction);
-    fileMenu->addAction(saveAsAction);
+	fileMenu = getMenuBar()->addMenu(tr("&File"));
+	fileMenu->addAction(exitAction);
+	fileMenu->addAction(openAction);
+	fileMenu->addAction(saveAction);
+	fileMenu->addAction(saveAsAction);
 }
 
 Spreadsheet* MainWindow::getSpreadsheet()
 {
-    if (spreadsheet == nullptr)
-    {
-        spreadsheet = new Spreadsheet(this);
+	if (spreadsheet == nullptr)
+	{
+		spreadsheet = new Spreadsheet(this);
 
-        connect(spreadsheet, &Spreadsheet::fileChanged, this, &MainWindow::handleFileChanged);
-        connect(spreadsheet, &Spreadsheet::updateStatus, getStatusBar(), &QStatusBar::showMessage);
-        connect(spreadsheet, &Spreadsheet::modified, this, &QWidget::setWindowModified);
+		connect(spreadsheet, &Spreadsheet::fileChanged, this, &MainWindow::onFileChanged);
+		connect(spreadsheet, &Spreadsheet::spreadsheetMessage, this, &MainWindow::onSpreadsheetMessage);
+		connect(spreadsheet, &Spreadsheet::unsavedChanges, this, &QWidget::setWindowModified);
 
-        setCentralWidget(spreadsheet);
-    }
+		setCentralWidget(spreadsheet);
+	}
 
-    return spreadsheet;
+	return spreadsheet;
 }
 
 QMenuBar* MainWindow::getMenuBar()
 {
-    if (menuBar == nullptr) {menuBar = QMainWindow::menuBar();}
+	if (menuBar == nullptr)
+	{
+		menuBar = QMainWindow::menuBar();
+	}
 
-    return menuBar;
+	return menuBar;
 }
 
 QStatusBar* MainWindow::getStatusBar()
 {
-    if (statusBar == nullptr)
-    {
-        statusBar = QMainWindow::statusBar();
-    }
+	if (statusBar == nullptr)
+	{
+		statusBar = QMainWindow::statusBar();
+	}
 
-    return statusBar;
+	return statusBar;
 }
 
 
-void MainWindow::exitProgram()
+void MainWindow::onExitTriggered()
 {
-    close();
+	close();
 }
 
-void MainWindow::handleFileChanged(const QString& fileName)
+void MainWindow::onFileChanged(const QString& fileName)
 {
-    setWindowTitle(tr("Spreadsheet - %1 [*]").arg(fileName));
+	setWindowTitle(tr("Spreadsheet - %1 [*]").arg(fileName));
+}
+
+void MainWindow::onSpreadsheetMessage(const QString& thing)
+{
+	getStatusBar()->showMessage(thing, MESSAGE_TIMEOUT);
 }
 
 

@@ -15,30 +15,46 @@ public:
 
 private:
     
+    const int MESSAGE_TIMEOUT = 2000;
+
     // Actions
-    QAction* exitProgramAction;
+    QAction* exitAction;
     QAction* openAction;
     QAction* saveAction;
     QAction* saveAsAction;
 
     // UI Elements
+    Spreadsheet* spreadsheet;
     QMenuBar* menuBar;
     QStatusBar* statusBar;
-    Spreadsheet* spreadsheet;
     QMenu* fileMenu;
 
-    // Initialize actions
+    /** Initializes window menu actions. */
     void createActions();
 
-    // Initialize menus
+    /** Initializes window menus */
     void createMenus();
 
+    /** Get spreadsheet member, initializing if needed.
+        @return Pointer to central spreadsheet widget member. */
     Spreadsheet* getSpreadsheet();
+
+    /** Get main window menu bar member, initializing if needed.
+        @return Pointer to main window menu bar member. */
     QMenuBar* getMenuBar();
+
+    /** Get main window status bar member, initializing if needed. 
+        @return Pointer to main window status bar member. */
     QStatusBar* getStatusBar();
 
 public slots:
-    void exitProgram();
-    void handleFileChanged(const QString& fileName);
+    /** Handle exit action. */
+    void onExitTriggered();
+
+    /** Handle spreadsheet file change. */
+    void onFileChanged(const QString& fileName);
+
+    /** Handle spreadsheet message. */
+    void onSpreadsheetMessage(const QString& thing);
 };
 
