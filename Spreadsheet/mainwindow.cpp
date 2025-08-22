@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget* parent)
 	// Menus
 	createActions();
 	createMenus();
+
+	loadSettings();
 }
 
 MainWindow::~MainWindow()
@@ -24,8 +26,20 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	if (!getSpreadsheet()->canContinue())
 	{
 		event->ignore();
+		return;
+	}
+
+	saveSettings();
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+	if (!isMaximized())
+	{
+		unmaximizedSize = event->oldSize();
 	}
 }
+
 
 void MainWindow::createActions()
 {
@@ -69,6 +83,34 @@ void MainWindow::createMenus()
 	fileMenu->addAction(saveAction);
 	fileMenu->addAction(saveAsAction);
 	fileMenu->addAction(exitAction);
+}
+
+void MainWindow::saveSettings()
+{
+	QSettings settings(ORGANIZATION_NAME, PROGRAM_NAME);
+
+	// Main Window
+	settings.beginGroup("mainwindow");
+	settings.setValue("size", unmaximizedSize);
+	settings.setValue("isMaximized", isMaximized());
+	settings.endGroup();
+}
+
+void MainWindow::loadSettings()
+{
+	QSettings settings(ORGANIZATION_NAME, PROGRAM_NAME);
+
+	// Main Window
+	settings.beginGroup("mainwindow");
+	unmaximizedSize = settings.value("size").value<QSize>();
+	resize(unmaximizedSize);
+	
+	if (settings.value("isMaximized").toBool())
+	{
+		showMaximized();
+	}
+
+	settings.endGroup();
 }
 
 Spreadsheet* MainWindow::getSpreadsheet()

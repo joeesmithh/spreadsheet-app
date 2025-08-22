@@ -18,9 +18,15 @@ public:
         @param The event requesting the close. */
     void closeEvent(QCloseEvent* event);
 
+    void resizeEvent(QResizeEvent* event);
+
 private:
     
     const int MESSAGE_TIMEOUT = 2000;
+    const QString ORGANIZATION_NAME = tr("joeesmithh");
+    const QString PROGRAM_NAME = tr("Spreadsheet");
+
+    QSize unmaximizedSize;
 
     // Actions
     QAction* exitAction;
@@ -40,6 +46,12 @@ private:
 
     /** Initializes window menus */
     void createMenus();
+
+    /** Save settings to registry. */
+    void saveSettings();
+
+    /** Load settings from registry. */
+    void loadSettings();
 
     /** Get spreadsheet member, initializing if needed.
         @return Pointer to central spreadsheet widget member. */
