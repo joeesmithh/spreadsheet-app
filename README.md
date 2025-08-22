@@ -3,7 +3,7 @@ This is a simple spreadsheet app created and heavily guided by [C++ GUI Programm
 
 <br/>
 
-<div style="text-align: center">
+<div align="center">
     <img width="75%" src="https://i.imgur.com/UQcI1s1.png"/>
 </div>
 
