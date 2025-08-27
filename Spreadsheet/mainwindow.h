@@ -18,6 +18,8 @@ public:
         @param The event requesting the close. */
     void closeEvent(QCloseEvent* event);
 
+    /** Interrupt resize event to cache main window size. 
+        @param event The resize event to iterrupt. */
     void resizeEvent(QResizeEvent* event);
 
 private:

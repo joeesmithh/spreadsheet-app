@@ -91,7 +91,12 @@ void MainWindow::saveSettings()
 
 	// Main Window
 	settings.beginGroup("mainwindow");
-	settings.setValue("size", unmaximizedSize);
+	
+	if (unmaximizedSize.isValid())
+	{
+		settings.setValue("size", unmaximizedSize);
+	}
+
 	settings.setValue("isMaximized", isMaximized());
 	settings.endGroup();
 }
